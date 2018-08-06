@@ -1,13 +1,14 @@
 var express = require( 'express' );
 var router = express.Router();
+
 var User = require( '../models/user' );
 
-
 const bcrypt = require( 'bcrypt' );
-
 const saltRounds = 10;
 const myPlaintextPassword = 's0/\/\P4$$w0rD';
 const someOtherPlaintextPassword = 'not_bacon';
+
+
 
 // ==========================================================
 //    LIST OF USERS
@@ -52,7 +53,7 @@ router.post( '/', ( req, res ) => {
         if( err ) {
             return res.status( 400 ).json({
                 ok: false,
-                message: 'error when creating user',
+                message: 'Error when creating user',
                 errors: err
             });
         }
@@ -64,5 +65,80 @@ router.post( '/', ( req, res ) => {
     });
 });
 
+// ==========================================================
+//    UPDATE USER
+// ==========================================================
+router.put( '/:id', ( req, res ) => {
+
+    var id = req.params.id;
+    var body = req.body;
+
+    User.findById( id, ( err, user ) => {
+
+        if( err ) {
+            return res.status( 500 ).json({
+                ok: false,
+                message: 'Error when searching user',
+                errors: err
+            });
+
+        }
+        if ( !user ) {
+            return res.status( 400 ).json({
+                ok: false,
+                message: 'The user with the id ' + id + ' does not exist',
+                errors: err
+            });
+        }
+        user.name = body.name;
+        user.email = body.email;
+        user.role = body.role;
+
+        user.save(( err, userDB ) => {
+            if( err ) {
+                return res.status( 400 ).json({
+                    ok: false,
+                    message: 'Error when updating user',
+                    errors: err
+                });
+            }
+            res.status( 201 ).json({
+                ok: true,
+                user: userDB
+            });
+        });
+    });
+});
+
+// ==========================================================
+//    DELETE USER
+// ==========================================================
+router.delete( '/:id', ( req, res ) => {
+
+    var id = req.params.id;
+
+    User.findByIdAndRemove( id, ( err, userDB ) => {
+
+        if( err ) {
+            return res.status( 500 ).json({
+                ok: false,
+                message: 'Error when deleting user',
+                errors: err
+            });
+        }
+        if ( !userDB ) {
+            return res.status( 400 ).json({
+                ok: false,
+                message: 'The user with the id ' + id + ' does not exist',
+                errors: { message: 'the user does not exist' }
+            });
+        }
+        res.status( 200 ).json({
+            ok: true,
+            user: userDB
+        });
+    });
+
+});
 
 module.exports = router;

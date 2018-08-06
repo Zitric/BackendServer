@@ -11,6 +11,7 @@ var bodyParser = require( 'body-parser' );
 // Routes imports
 var indexRouter = require( './routes/index' );
 var usersRouter = require( './routes/users' );
+var loginRouter = require( './routes/login' );
 
 // Variables
 var app = express(  );
@@ -28,6 +29,7 @@ app.use( express.static( path.join( __dirname, 'public' ) ) );
 // Middlewares
 app.use( '/', indexRouter );
 app.use( '/users', usersRouter );
+app.use( '/login', loginRouter );
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
