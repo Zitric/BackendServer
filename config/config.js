@@ -1,0 +1,1 @@
+module.exports.SEED = 'this-is-my-complicated-seed';

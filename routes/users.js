@@ -1,9 +1,9 @@
-var express = require( 'express' );
-var router = express.Router();
-
-var User = require( '../models/user' );
-
+const express = require( 'express' );
 const bcrypt = require( 'bcrypt' );
+const User = require( '../models/user' );
+const mdAuthentication = require( '../middlewares/authentication');
+
+var router = express.Router();
 const saltRounds = 10;
 const myPlaintextPassword = 's0/\/\P4$$w0rD';
 const someOtherPlaintextPassword = 'not_bacon';
@@ -34,10 +34,11 @@ router.get( '/', ( req, res, next ) => {
       });
 });
 
+
 // ==========================================================
 //    CREATE USER
 // ==========================================================
-router.post( '/', ( req, res ) => {
+router.post( '/', mdAuthentication.verifyToken , ( req, res ) => {
 
     var body = req.body;
 
