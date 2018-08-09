@@ -2,7 +2,6 @@ const express = require( 'express' );
 const User = require( '../models/user' );
 const bcrypt = require( 'bcrypt' );
 const jwt = require( 'jsonwebtoken' );
-const SEED = require( '../config/config').SEED;
 
 const router = express.Router();
 
@@ -10,6 +9,9 @@ const saltRounds = 10;
 const myPlaintextPassword = 's0/\/\P4$$w0rD';
 const someOtherPlaintextPassword = 'not_bacon';
 
+// ==========================================================
+//    POST LOGIN PAGE
+// ==========================================================
 router.post( '/', ( req, res ) => {
 
     const body = req.body;
@@ -39,8 +41,9 @@ router.post( '/', ( req, res ) => {
         }
 
         // create a token
-        userDB.password = ':)';
-        var token = jwt.sign({ user: userDB }, SEED, { expiresIn: 14400 });
+        const token =  jwt.sign({ user: userDB },
+            process.env.SEED,
+            { expiresIn: process.env.EXPIRATION_TOKEN });
 
 
         res.status( 200 ).json({

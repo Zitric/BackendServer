@@ -1,20 +1,23 @@
+
+require('./config/config');
+
 // Requires
-var createError = require( 'http-errors' );
-var express = require( 'express' );
-var path = require( 'path' );
-var cookieParser = require( 'cookie-parser' );
-var logger = require( 'morgan' );
-var mongoose = require( 'mongoose' );
-var bodyParser = require( 'body-parser' );
+const createError = require( 'http-errors' );
+const express = require( 'express' );
+const path = require( 'path' );
+const cookieParser = require( 'cookie-parser' );
+const logger = require( 'morgan' );
+const mongoose = require( 'mongoose' );
+const bodyParser = require( 'body-parser' );
 
 
 // Routes imports
-var indexRouter = require( './routes/index' );
-var usersRouter = require( './routes/users' );
-var loginRouter = require( './routes/login' );
+const indexRouter = require( './routes/index' );
+const usersRouter = require( './routes/users' );
+const loginRouter = require( './routes/login' );
 
-// Variables
-var app = express(  );
+// constiables
+const app = express(  );
 
 // view engine setup
 app.set( 'views', path.join( __dirname, 'views' ) );
@@ -32,8 +35,8 @@ app.use( '/users', usersRouter );
 app.use( '/login', loginRouter );
 
 // parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+app.use( bodyParser.urlencoded({ extended: false }) );
+app.use( bodyParser.json() );
 
 
 
@@ -42,23 +45,18 @@ app.use(bodyParser.json());
 //                            CODE
 // =================================================================
 
-app.listen(  3000, (  ) => {
-    console.log( 'The port is ', 3000  );
-}  );
+// app.listen(  process.env.PORT, (  ) => {
+//     console.log( 'The port is ', process.env.PORT  );
+// });
 
 // Connection to database
-mongoose.connection.openUri( 'mongodb://localhost:27017/hospitalDB', ( err, res ) => {
+mongoose.connection.openUri( process.env.URLDB, ( err, res ) => {
     if ( err ) {
         throw err;
     } else {
         console.log( 'Data base ONLINE' );
     }
 } );
-
-// =================================================================
-//                            CODE
-// =================================================================
-
 
 
 // catch 404 and forward to error handler

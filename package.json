@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "nodemon ./bin/www"
   },
   "dependencies": {
     "bcrypt": "^3.0.0",
@@ -17,7 +17,8 @@
     "jsonwebtoken": "^8.3.0",
     "mongoose": "^5.2.6",
     "mongoose-unique-validator": "^2.0.1",
-    "morgan": "~1.9.0"
+    "morgan": "~1.9.0",
+    "underscore": "^1.9.1"
   },
   "description": "Backend server",
   "main": "index.js",

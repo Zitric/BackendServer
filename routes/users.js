@@ -1,9 +1,10 @@
 const express = require( 'express' );
 const bcrypt = require( 'bcrypt' );
 const User = require( '../models/user' );
-const mdAuthentication = require( '../middlewares/authentication');
+const _ = require( 'underscore' );
+const { verifyToken, verifyAdminRole } = require( '../middlewares/authentication');
 
-var router = express.Router();
+const router = express.Router();
 const saltRounds = 10;
 const myPlaintextPassword = 's0/\/\P4$$w0rD';
 const someOtherPlaintextPassword = 'not_bacon';
@@ -13,32 +14,40 @@ const someOtherPlaintextPassword = 'not_bacon';
 // ==========================================================
 //    LIST OF USERS
 // ==========================================================
-router.get( '/', ( req, res, next ) => {
+router.get( '/', verifyToken, ( req, res, next ) => {
 
-  User.find({ }, 'name email img role' )
-      .exec(
-        ( err, users ) => {
 
-          if( err ) {
-            return res.status( 500 ).json({
-                ok: false,
-                message: 'Error load users of the data base',
-                errors: err
-            });
-          }
-          res.status( 200 ).json({
-              ok: true,
-              users
+    let from = Number( req.query.from ) || 0;
+    let limit = Number( req.query.limit ) || 5;
+
+    User.find({ }, 'name email img role status' )
+        .skip(from)
+        .limit(limit)
+        .exec(
+            ( err, users ) => {
+
+              if( err ) {
+                return res.status( 500 ).json({
+                    ok: false,
+                    message: 'Error load users of the data base',
+                    errors: err
+                });
+              }
+              User.count({ status: true }, ( err, count ) => {
+                  res.json({
+                      ok: true,
+                      users,
+                      count
+              });
           });
-
-      });
+     });
 });
 
 
 // ==========================================================
 //    CREATE USER
 // ==========================================================
-router.post( '/', mdAuthentication.verifyToken , ( req, res ) => {
+router.post( '/', verifyToken , ( req, res ) => {
 
     var body = req.body;
 
@@ -51,6 +60,7 @@ router.post( '/', mdAuthentication.verifyToken , ( req, res ) => {
     });
 
     user.save( ( err, userDB ) => {
+
         if( err ) {
             return res.status( 400 ).json({
                 ok: false,
@@ -59,7 +69,7 @@ router.post( '/', mdAuthentication.verifyToken , ( req, res ) => {
             });
         }
 
-        res.status( 201 ).json({
+        res.json({
             ok: true,
             user: userDB
         });
@@ -69,33 +79,14 @@ router.post( '/', mdAuthentication.verifyToken , ( req, res ) => {
 // ==========================================================
 //    UPDATE USER
 // ==========================================================
-router.put( '/:id', ( req, res ) => {
+router.put( '/:id', verifyToken, ( req, res ) => {
 
-    var id = req.params.id;
-    var body = req.body;
+    let id = req.params.id;
+    let body = _.pick( req.body, ['name', 'email', 'role', 'img']) ;
 
-    User.findById( id, ( err, user ) => {
+    User.findByIdAndUpdate( id, body,  { new: true, runValidators: true },
+        ( err, userDB ) => {
 
-        if( err ) {
-            return res.status( 500 ).json({
-                ok: false,
-                message: 'Error when searching user',
-                errors: err
-            });
-
-        }
-        if ( !user ) {
-            return res.status( 400 ).json({
-                ok: false,
-                message: 'The user with the id ' + id + ' does not exist',
-                errors: err
-            });
-        }
-        user.name = body.name;
-        user.email = body.email;
-        user.role = body.role;
-
-        user.save(( err, userDB ) => {
             if( err ) {
                 return res.status( 400 ).json({
                     ok: false,
@@ -103,18 +94,18 @@ router.put( '/:id', ( req, res ) => {
                     errors: err
                 });
             }
-            res.status( 201 ).json({
+            res.json({
                 ok: true,
                 user: userDB
             });
-        });
+
     });
 });
 
 // ==========================================================
 //    DELETE USER
 // ==========================================================
-router.delete( '/:id', ( req, res ) => {
+router.delete( '/:id', verifyToken, ( req, res ) => {
 
     var id = req.params.id;
 
