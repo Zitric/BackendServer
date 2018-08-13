@@ -17,6 +17,7 @@ const usersRouter = require( './routes/users' );
 const loginRouter = require( './routes/login' );
 const hospitalsRouter = require( './routes/hospitals' );
 const doctorsRouter = require( './routes/doctors' );
+const searchRouter = require( './routes/search' );
 
 // constiables
 const app = express(  );
@@ -37,6 +38,7 @@ app.use( '/users', usersRouter );
 app.use( '/login', loginRouter );
 app.use( '/hospitals', hospitalsRouter );
 app.use( '/doctors', doctorsRouter );
+app.use( '/search', searchRouter  );
 
 // parse application/x-www-form-urlencoded
 app.use( bodyParser.urlencoded({ extended: false }) );

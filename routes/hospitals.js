@@ -14,9 +14,10 @@ router.get( '/', (req, res, next ) => {
     const from = Number( req.query.from ) || 0;
     const limit = Number( req.query.limit ) || 5;
 
-    Hospital.find({ }, 'name img user' )
+    Hospital.find({})
         .skip(from)
         .limit(limit)
+        .populate('user', 'name email')
         .exec(
             ( err, hospitals ) => {
 
@@ -27,11 +28,11 @@ router.get( '/', (req, res, next ) => {
                         errors: err
                     });
                 }
-                Hospital.count({ status: true }, ( err, count ) => {
+                Hospital.count({ status: true }, ( err, total ) => {
                     res.json({
                         ok: true,
                         hospitals,
-                        count
+                        total
                 });
         });
     });
@@ -47,7 +48,6 @@ router.post( '/', verifyToken, ( req, res ) => {
 
     const hospital = new Hospital({
         name: body.name,
-        img: body.img,
         user: req.user._id
     });
 

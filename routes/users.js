@@ -21,7 +21,7 @@ router.get( '/', verifyToken, ( req, res, next ) => {
     const from = Number( req.query.from ) || 0;
     const limit = Number( req.query.limit ) || 5;
 
-    User.find({ }, 'name email img role status' )
+    User.find({ status: true }, 'name email img role status' )
         .skip(from)
         .limit(limit)
         .exec(
@@ -34,11 +34,11 @@ router.get( '/', verifyToken, ( req, res, next ) => {
                     errors: err
                 });
               }
-              User.count({ status: true }, ( err, count ) => {
+              User.count({ status: true }, ( err, total ) => {
                   res.json({
                       ok: true,
                       users,
-                      count
+                      total
               });
           });
      });

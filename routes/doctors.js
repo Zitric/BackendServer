@@ -17,6 +17,8 @@ router.get( '/', (req, res, next ) => {
     Doctor.find({ }, 'name img user hospital' )
         .skip(from)
         .limit(limit)
+        .populate( 'user', 'name email' )
+        .populate( 'hospital', 'name' )
         .exec(
             ( err, doctors ) => {
 
@@ -27,11 +29,11 @@ router.get( '/', (req, res, next ) => {
                         errors: err
                     });
                 }
-                Doctor.count({ status: true }, ( err, count ) => {
+                Doctor.count({ status: true }, ( err, total ) => {
                     res.json({
                         ok: true,
                         doctors,
-                        count
+                        total
                 });
         });
     });
@@ -45,9 +47,10 @@ router.post( '/', verifyToken, ( req, res ) => {
 
     const body = req.body;
 
+    console.log('body', body );
+
     const doctor = new Doctor({
         name: body.name,
-        img: body.img,
         user: req.user._id,
         hospital: body.hospital
     });

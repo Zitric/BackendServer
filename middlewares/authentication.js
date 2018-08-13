@@ -1,4 +1,5 @@
 const jwt = require( 'jsonwebtoken' );
+const User = require( '../models/user' );
 
 // ==========================================================
 //    VERIFY TOKEN
@@ -6,8 +7,6 @@ const jwt = require( 'jsonwebtoken' );
 const verifyToken = ( ( req, res, next ) => {
 
     const token = req.get( 'token' );
-
-    console.log('token: ', token );
 
     jwt.verify( token, process.env.SEED, ( err, decoded ) => {
 
@@ -17,13 +16,9 @@ const verifyToken = ( ( req, res, next ) => {
                 err: { message: 'Incorrect token' }
             });
         }
-        next();
+
         req.user = decoded.user;
-        // return res.status( 200 ).json({
-        //     ok: true,
-        //     decoded
-        //
-        // });
+        next();
     });
 
 });
