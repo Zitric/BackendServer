@@ -15,6 +15,8 @@ const bodyParser = require( 'body-parser' );
 const indexRouter = require( './routes/index' );
 const usersRouter = require( './routes/users' );
 const loginRouter = require( './routes/login' );
+const hospitalsRouter = require( './routes/hospitals' );
+const doctorsRouter = require( './routes/doctors' );
 
 // constiables
 const app = express(  );
@@ -33,6 +35,8 @@ app.use( express.static( path.join( __dirname, 'public' ) ) );
 app.use( '/', indexRouter );
 app.use( '/users', usersRouter );
 app.use( '/login', loginRouter );
+app.use( '/hospitals', hospitalsRouter );
+app.use( '/doctors', doctorsRouter );
 
 // parse application/x-www-form-urlencoded
 app.use( bodyParser.urlencoded({ extended: false }) );

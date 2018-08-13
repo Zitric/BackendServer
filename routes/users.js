@@ -1,3 +1,4 @@
+// Requires
 const express = require( 'express' );
 const bcrypt = require( 'bcrypt' );
 const User = require( '../models/user' );
@@ -17,8 +18,8 @@ const someOtherPlaintextPassword = 'not_bacon';
 router.get( '/', verifyToken, ( req, res, next ) => {
 
 
-    let from = Number( req.query.from ) || 0;
-    let limit = Number( req.query.limit ) || 5;
+    const from = Number( req.query.from ) || 0;
+    const limit = Number( req.query.limit ) || 5;
 
     User.find({ }, 'name email img role status' )
         .skip(from)
@@ -49,9 +50,9 @@ router.get( '/', verifyToken, ( req, res, next ) => {
 // ==========================================================
 router.post( '/', verifyToken , ( req, res ) => {
 
-    var body = req.body;
+    const body = req.body;
 
-    var user = new User({
+    const user = new User({
         name: body.name,
         email: body.email,
         password: bcrypt.hashSync ( body.password, saltRounds ),
@@ -81,8 +82,8 @@ router.post( '/', verifyToken , ( req, res ) => {
 // ==========================================================
 router.put( '/:id', verifyToken, ( req, res ) => {
 
-    let id = req.params.id;
-    let body = _.pick( req.body, ['name', 'email', 'role', 'img']) ;
+    const id = req.params.id;
+    const body = _.pick( req.body, ['name', 'email', 'role', 'img']) ;
 
     User.findByIdAndUpdate( id, body,  { new: true, runValidators: true },
         ( err, userDB ) => {
