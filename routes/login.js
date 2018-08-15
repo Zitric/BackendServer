@@ -21,7 +21,7 @@ router.post( '/', ( req, res ) => {
         if( err ) {
             return res.status( 500 ).json({
                 ok: false,
-                message: 'Error when searching user',
+                message: 'Error when searching users',
                 errors: err
             });
         }

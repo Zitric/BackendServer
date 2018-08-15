@@ -65,7 +65,7 @@ router.post( '/', verifyToken , ( req, res ) => {
         if( err ) {
             return res.status( 400 ).json({
                 ok: false,
-                message: 'Error when creating user',
+                message: 'Error when creating users',
                 errors: err
             });
         }
@@ -91,7 +91,7 @@ router.put( '/:id', verifyToken, ( req, res ) => {
             if( err ) {
                 return res.status( 400 ).json({
                     ok: false,
-                    message: 'Error when updating user',
+                    message: 'Error when updating users',
                     errors: err
                 });
             }
@@ -115,15 +115,15 @@ router.delete( '/:id', verifyToken, ( req, res ) => {
         if( err ) {
             return res.status( 500 ).json({
                 ok: false,
-                message: 'Error when deleting user',
+                message: 'Error when deleting users',
                 errors: err
             });
         }
         if ( !userDB ) {
             return res.status( 400 ).json({
                 ok: false,
-                message: 'The user with the id ' + id + ' does not exist',
-                errors: { message: 'the user does not exist' }
+                message: 'The users with the id ' + id + ' does not exist',
+                errors: { message: 'the users does not exist' }
             });
         }
         res.status( 200 ).json({

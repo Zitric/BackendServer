@@ -18,8 +18,8 @@ const loginRouter = require( './routes/login' );
 const hospitalsRouter = require( './routes/hospitals' );
 const doctorsRouter = require( './routes/doctors' );
 const searchRouter = require( './routes/search' );
+const uploadRouter = require( './routes/upload' );
 
-// constiables
 const app = express(  );
 
 // view engine setup
@@ -38,22 +38,13 @@ app.use( '/users', usersRouter );
 app.use( '/login', loginRouter );
 app.use( '/hospitals', hospitalsRouter );
 app.use( '/doctors', doctorsRouter );
-app.use( '/search', searchRouter  );
+app.use( '/search', searchRouter );
+app.use( '/upload', uploadRouter );
 
 // parse application/x-www-form-urlencoded
 app.use( bodyParser.urlencoded({ extended: false }) );
 app.use( bodyParser.json() );
 
-
-
-
-// =================================================================
-//                            CODE
-// =================================================================
-
-// app.listen(  process.env.PORT, (  ) => {
-//     console.log( 'The port is ', process.env.PORT  );
-// });
 
 // Connection to database
 mongoose.connection.openUri( process.env.URLDB, ( err, res ) => {

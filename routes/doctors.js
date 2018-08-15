@@ -14,7 +14,7 @@ router.get( '/', (req, res, next ) => {
     const from = Number( req.query.from ) || 0;
     const limit = Number( req.query.limit ) || 5;
 
-    Doctor.find({ }, 'name img user hospital' )
+    Doctor.find({ }, 'name img users hospital' )
         .skip(from)
         .limit(limit)
         .populate( 'user', 'name email' )
