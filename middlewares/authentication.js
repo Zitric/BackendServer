@@ -33,7 +33,7 @@ const verifyAdminRole = ( req, res, next ) => {
     if ( user.role !== 'ADMIN_ROLE') {
         return res.json({
             ok: false,
-            err: { message: 'the users is not administrator' }
+            err: { message: 'the user is not administrator' }
         });
     }
     next();
