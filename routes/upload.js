@@ -79,6 +79,7 @@ router.put( '/:table/:id', (req, res, next ) => {
 function uploadByTable( table, id, fileName, res ) {
 
     switch ( table ) {
+
         case 'users':
 
             User.findById( id, ( err, user ) => {
@@ -169,14 +170,13 @@ function uploadByTable( table, id, fileName, res ) {
 
                     return res.status( 200 ).json({
                         ok: true,
-                        message: 'Img of doctor updated',
+                        message: 'Img of hospital updated',
                         hospital: updatedHospital
                     });
                 });
             });
             break;
     }
-
 }
 
 

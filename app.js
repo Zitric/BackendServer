@@ -19,6 +19,7 @@ const hospitalsRouter = require( './routes/hospitals' );
 const doctorsRouter = require( './routes/doctors' );
 const searchRouter = require( './routes/search' );
 const uploadRouter = require( './routes/upload' );
+const imagesRouter = require( './routes/images' );
 
 const app = express(  );
 
@@ -40,6 +41,7 @@ app.use( '/hospitals', hospitalsRouter );
 app.use( '/doctors', doctorsRouter );
 app.use( '/search', searchRouter );
 app.use( '/upload', uploadRouter );
+app.use( '/img', imagesRouter );
 
 // parse application/x-www-form-urlencoded
 app.use( bodyParser.urlencoded({ extended: false }) );
@@ -48,12 +50,14 @@ app.use( bodyParser.json() );
 
 // Connection to database
 mongoose.connection.openUri( process.env.URLDB, ( err, res ) => {
-    if ( err ) {
-        throw err;
-    } else {
-        console.log( 'Data base ONLINE' );
-    }
-} );
+    if ( err ) throw err;
+    console.log( 'Data base \x1b[32m%s\x1b[0m', 'ONLINE' );
+});
+
+// Server index config
+// const serveIndex = require( 'serve-index' );
+// app.use( express.static(__dirname + '/' ))
+// app.use( '/uploads', serveIndex( __dirname + '/uploads' ));
 
 
 // catch 404 and forward to error handler

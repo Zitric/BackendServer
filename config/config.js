@@ -29,7 +29,8 @@ process.env.SEED = process.env.SEED ||
 //    DATA BASE
 // ==========================================================
 process.env.URLDB = process.env.NODE_ENV === 'dev' ?
-    'mongodb://localhost:27017/hospitalDB' :
+    'mongodb://localhost:27017/hospitalDB'
+    :
     process.env.MONGO_URL_HOSPITAL;
 
 
