@@ -15,7 +15,7 @@ const someOtherPlaintextPassword = 'not_bacon';
 // ==========================================================
 //    LIST OF USERS
 // ==========================================================
-router.get( '/', verifyToken, ( req, res, next ) => {
+router.get( '/', verifyToken, ( req, res ) => {
 
 
     const from = Number( req.query.from ) || 0;
@@ -65,7 +65,7 @@ router.post( '/', ( req, res ) => {
         if( err ) {
             return res.status( 400 ).json({
                 ok: false,
-                message: 'Error when creating users',
+                message: 'Error creating users',
                 errors: err
             });
         }
@@ -91,7 +91,7 @@ router.put( '/:id', verifyToken, ( req, res ) => {
             if( err ) {
                 return res.status( 400 ).json({
                     ok: false,
-                    message: 'Error when updating users',
+                    message: 'Error updating users',
                     errors: err
                 });
             }
@@ -106,7 +106,7 @@ router.put( '/:id', verifyToken, ( req, res ) => {
 // ==========================================================
 //    DELETE USER
 // ==========================================================
-router.delete( '/:id', verifyToken, ( req, res ) => {
+router.delete( '/:id', [ verifyToken, verifyAdminRole ], ( req, res ) => {
 
     var id = req.params.id;
 
@@ -115,7 +115,7 @@ router.delete( '/:id', verifyToken, ( req, res ) => {
         if( err ) {
             return res.status( 500 ).json({
                 ok: false,
-                message: 'Error when deleting users',
+                message: 'Error deleting users',
                 errors: err
             });
         }

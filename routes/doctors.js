@@ -47,8 +47,6 @@ router.post( '/', verifyToken, ( req, res ) => {
 
     const body = req.body;
 
-    console.log('body', body );
-
     const doctor = new Doctor({
         name: body.name,
         user: req.user._id,
@@ -112,7 +110,7 @@ router.delete( '/:id', verifyToken, ( req, res ) => {
         if( err ) {
             return res.status( 500 ).json({
                 ok: false,
-                message: 'Error when deleting hospital',
+                message: 'Error when deleting doctor',
                 errors: err
             });
         }

@@ -1,7 +1,7 @@
 // Requires
 const express = require( 'express' );
-const Hospital = require( '../models/hospital');
-const { verifyToken } = require( '../middlewares/authentication');
+const Hospital = require( '../models/hospital' );
+const { verifyToken } = require( '../middlewares/authentication' );
 
 const router = express.Router();
 
@@ -9,7 +9,7 @@ const router = express.Router();
 // ==========================================================
 //    LIST OF HOSPITALS
 // ==========================================================
-router.get( '/', (req, res, next ) => {
+router.get( '/', ( req, res, next ) => {
 
     const from = Number( req.query.from ) || 0;
     const limit = Number( req.query.limit ) || 5;
