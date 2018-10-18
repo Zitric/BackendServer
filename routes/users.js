@@ -83,9 +83,10 @@ router.post( '/', ( req, res ) => {
 router.put( '/:id', verifyToken, ( req, res ) => {
 
     const id = req.params.id;
-    const body = _.pick( req.body, ['name', 'email', 'role', 'img']) ;
+    const body = _.pick( req.body, ['name', 'email', 'role', 'img', 'status']) ;
 
-    User.findByIdAndUpdate( id, body,  { new: true, runValidators: true },
+    // runValidator don't work from the Front-end
+    User.findByIdAndUpdate( id, body,  { new: true /*, runValidators: true */ },
         ( err, userDB ) => {
 
             if( err ) {
